@@ -15,14 +15,9 @@ ms.topic: how-to
 
 # Configure an app's publisher domain
 
-An app’s publisher domain informs users where their information is being sent. The publisher domain also acts as an input or prerequisite for [publisher verification](publisher-verification-overview.md). Depending on when the app was registered and the status of the Publisher Verification, it would be displayed directly to the user on the [application's consent prompt](application-consent-experience.md). An application’s publisher domain is displayed to users (depending on the state of Publisher Verification) on the consent UX to let users know where their information is being sent for trustworthiness.
-
-In an app's consent prompt, either the publisher domain or the publisher verification status appears. Which information is shown depends on whether the app is a [multitenant app](/azure/architecture/guide/multitenant/overview), when the app was registered, and the app's publisher verification status.
-
-## Understand multitenant apps
-
-A *multitenant app* is an app that supports user accounts that are outside a single organizational directory. For example, a multitenant app might support all Microsoft Entra work or school accounts, or it might support both Microsoft Entra work or school accounts and personal Microsoft accounts.
-
+## What is Publisher Domain
+The publisher domain appears during the  [application's consent prompt](application-consent-experience.md), helping users identify the organization behind the app and where their information is being sent—enhancing transparency and trust. This is particularly important for [multitenant app](https://github.com/microsoftdocs/architecture-center/blob/main/docs/guide/multitenant/overview.md), as it directly influences how identity and access requests are presented to users. The publisher domain also acts as an input or prerequisite for [publisher verification](publisher-verification-overview.md).
+ 
 ## Understand default publisher domain values
 
 Several factors determine the default value that's set for an app's publisher domain:
@@ -31,9 +26,26 @@ Several factors determine the default value that's set for an app's publisher do
 - Whether a tenant has tenant-verified domains.
 - The app registration date.
 
-### Tenant registration and tenant-verified domains
+### What is Verified Domain
 
-When you register a new app, the publisher domain of your app might be set to a default value. The default value depends on where the app is registered. The publisher domain value depends especially on whether the app is registered in a tenant and whether the tenant has tenant-verified domains.
+When a domain is marked as **verified** in Azure:
+
+- You have proven control of that domain (e.g., `contoso.com`) by adding a **DNS TXT record** to your domain’s DNS settings.
+- Azure trusts that your organization is the **legitimate owner** of that domain.
+- You can use that domain for:
+  - User principal names (e.g., `alice@contoso.com`)
+  - App publisher domains
+  - Email addresses
+  - Branding and white-labeling Azure AD B2C / B2B / UIs
+ 
+### Tenant-Verified Domain
+This specifically refers to a domain that is verified within the tenant where the app is registered.
+
+If an app is registered in Tenant A:
+- Only domains verified within Tenant A are considered tenant-verified.
+- Domains verified in other tenants do not count.
+
+### Tenant registration and tenant-verified domains
 
 If the app has tenant-verified domains, the app’s publisher domain defaults to the primary verified domain of the tenant. If the app doesn't have tenant-verified domains and the app isn't registered in a tenant, the app’s default publisher domain is null.
 
@@ -70,8 +82,8 @@ If your app was registered *before May 21, 2019*, your app's consent prompt show
 To set a publisher domain for your app by using the Microsoft Entra admin center:
 
 1. Sign in to the [Microsoft Entra admin center](https://entra.microsoft.com).
-1. If you have access to multiple tenants, use the **Settings** icon :::image type="icon" source="./media/common/admin-center-settings-icon.png" border="false"::: in the top right and select the tenant where the app is registered from the **Directories + subscriptions** menu.
-1. In Microsoft Entra admin center browse to **Identity** > **Applications** > **App registrations**. 
+   1. If you have access to multiple tenants, use the **Settings** icon :::image type="icon" source="./media/common/admin-center-settings-icon.png" border="false"::: in the top right and select the tenant where the app is registered from the **Directories + subscriptions** menu.
+1. Browse to **Identity** > **Applications** > **App registrations**. 
 1. Search for and select the app you want to configure.
 1. In **Overview**, in the resource menu under **Manage**, select **Branding**.
 1. In **Publisher domain**, select one of the following options:
